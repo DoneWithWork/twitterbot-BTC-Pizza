@@ -1,16 +1,7 @@
 require("dotenv").config({ path: __dirname + "/.env" });
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 4000;
-const { twitterClient } = require("./twitterClient.js");
+const { twitterClient } = require("../../twitterClient.js");
 const axios = require("axios");
-
 const fs = require("fs").promises;
-
-
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
 
 const tweet = async (price, status, percentage, gifUrl) => {
   try {
@@ -47,16 +38,15 @@ const GetgifUrl = async () => {
     return gifUrl;
   } catch (error) {
     console.error("Error fetching GIF:", error);
-    return ""; 
+    return "";
   }
 };
 const readJsonFileAsync = async () => {
   try {
-
     const price = await getPrice();
     const { per, profit } = await getStatus(price);
 
-    const gifUrl = await GetgifUrl(); 
+    const gifUrl = await GetgifUrl();
 
     await tweet(price, profit, per, gifUrl);
   } catch (err) {
@@ -66,7 +56,7 @@ const readJsonFileAsync = async () => {
 
 const getStatus = async (price) => {
   try {
-    const dataPath = "./data.json";
+    const dataPath = "../../data.json";
     const data = await fs.readFile(dataPath, "utf8");
     const jsonData = JSON.parse(data);
     const initialPrice = jsonData.initialPrice;
@@ -92,13 +82,7 @@ const getStatus = async (price) => {
   }
 };
 
-
-
-exports.handler = async (event, context) => {
-    const { next_run } = await event.body.json()
-   
-    console.log("Received event! Next invocation at:", next_run)
-   
-    // Call your readJsonFileAsync function here
-    await readJsonFileAsync();
-   }
+module.exports =  handler = () =>{
+    readJsonFileAsync();
+}
+readJsonFileAsync()
