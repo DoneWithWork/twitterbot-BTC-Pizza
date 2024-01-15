@@ -1,0 +1,2 @@
+[functions."readJsonFileAsync"]
+schedule = "*/30 * * * *"

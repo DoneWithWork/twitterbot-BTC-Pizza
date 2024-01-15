@@ -3,9 +3,10 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 4000;
 const { twitterClient } = require("./twitterClient.js");
-const CronJob = require("cron").CronJob;
 const axios = require("axios");
+
 const fs = require("fs").promises;
+
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
@@ -91,9 +92,13 @@ const getStatus = async (price) => {
   }
 };
 
-const cronTweet = new CronJob("0 */30 * * * *", async () => {
-  await readJsonFileAsync(); // Make sure to await the asynchronous function
-});
 
-readJsonFileAsync();
-cronTweet.start();
+
+exports.handler = async (event, context) => {
+    const { next_run } = await event.body.json()
+   
+    console.log("Received event! Next invocation at:", next_run)
+   
+    // Call your readJsonFileAsync function here
+    await readJsonFileAsync();
+   }
