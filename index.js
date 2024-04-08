@@ -4,8 +4,10 @@ const { twitterClient, twitterBearer } = require("./twitterClient");
 const fs = require("fs");
 const axios = require("axios");
 const express = require("express");
-const app = express();
+const cors = require("cors");
 
+const app = express();
+app.use(cors());
 // Required vars
 const up = "📈";
 const down = "📉";
