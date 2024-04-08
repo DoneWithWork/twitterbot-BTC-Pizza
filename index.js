@@ -20,10 +20,6 @@ const GetPrice = async () => {
   const res = await axios({
     method: "GET",
     url: "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
-    headers: {
-      accept: "application/json",
-      "x-cg-demo-api-key": process.env.Coin_Gecko_Api,
-    },
   });
   return Number(res.data.bitcoin.usd * 10000);
 };
