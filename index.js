@@ -3,6 +3,8 @@ dotenv.config();
 const { twitterClient, twitterBearer } = require("./twitterClient");
 const fs = require("fs");
 const axios = require("axios");
+const express = require("express");
+const app = express();
 
 // Required vars
 const up = "📈";
@@ -95,9 +97,25 @@ const tweet = async () => {
       media: { media_ids: [mediaId] },
     });
     console.log(response);
+    return true;
   } catch (err) {
     console.log(err);
+    return false;
   }
 };
 
-tweet();
+app.use(express.json());
+app.get("/tweet", async (req, res) => {
+  const status = await tweet();
+  if (status === true) {
+    res.send("Tweeted successfully!");
+  } else {
+    res.send("Error in tweeting!");
+  }
+});
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
