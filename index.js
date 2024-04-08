@@ -55,7 +55,7 @@ const GetPrice = async () => {
     .catch((error) => {
       console.error("Error:", error);
     });
-  return newPrice;
+  return (newPrice * 10000).toFixed(2);
 };
 
 /**
